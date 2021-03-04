@@ -16,3 +16,23 @@ output "db_connect_string" {
   description = "MySQL database connection string"
 }
 
+output "vpc_id" {
+  description = "ID of project VPC"
+  value = module.vpc.vpc_id
+}
+
+//terraform output vpc_id
+
+output "db_username" {
+  description = "Database administrator username"
+  value = aws_db_instance.database.username
+  sensitive = true
+}
+
+output "db_password" {
+  description = "Database administrator password"
+  value = aws_db_instance.database.password
+  sensitive = true
+}
+
+//terraform output -json
