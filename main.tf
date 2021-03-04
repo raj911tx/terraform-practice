@@ -71,6 +71,9 @@ module "vpc" {
     version = "2.66.0"
     //name = "vpc-${var.resource_tags["project"]}-${var.resource_tags["environment"]}"
     name = "vpc-${local.name_suffix}"
+    //azs = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d", "us-east-1e"]
+    azs = data.aws_availability_zones.available.names
+    
     //cidr = 10.0.0.0/16
     cidr = var.vpc_cidr_block
     enable_nat_gateway = true
@@ -107,3 +110,9 @@ resource "aws_db_instance" "database" {
     username = var.db_username
     password = var.db_password
 }
+
+data "aws_availability_zones" "available" {
+    state = "available"
+}
+
+data "aws_region" "current" { }
