@@ -1,3 +1,17 @@
+locals {
+  //name_suffix = "${var.resource_tags["project"]}-${var.resource_tags["environment"]}"
+    name_suffix = "${var.project_name}-${var.environment}"
+}
+
+locals {
+    required_tags = {
+        project = var.project_name
+        environment = var.environment
+    }
+    tags = merge(var.resource_tags,local.required_tags)
+
+}
+
 terraform {
     required_providers {
       aws = {
@@ -48,12 +62,15 @@ resource "aws_security_group" "web-sg" {
     }
     */
     
-    tags = var.resource_tags
+    //tags = var.resource_tags
+    tags = local.tags
 }
 
 module "vpc" {
     source = "terraform-aws-modules/vpc/aws"
     version = "2.66.0"
+    //name = "vpc-${var.resource_tags["project"]}-${var.resource_tags["environment"]}"
+    name = "vpc-${local.name_suffix}"
     //cidr = 10.0.0.0/16
     cidr = var.vpc_cidr_block
     enable_nat_gateway = true
@@ -76,7 +93,8 @@ module "ec2_instances" {
      version = "3.12.0"
     
     //name = "web-sg-project-x-dev"
-    name = "web-sg-${var.resource_tags["project"]}-${var.resource_tags["environment"]}"
+    //name = "web-sg-${var.resource_tags["project"]}-${var.resource_tags["environment"]}"
+    name = "web-sg-${local.name_suffix}"
 
 }
 

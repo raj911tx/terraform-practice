@@ -73,10 +73,13 @@ variable "private_subnet_cidr_blocks" {
 variable "resource_tags" {
     description = "tages to set to all resources"
     type = map(string)
+    /*
     default = {
         project = "project-x"
         environment = "dev"
     }
+    */
+    default = { }
 }
 
 validation {
@@ -110,4 +113,16 @@ variable "db_password" {
     description = "Database administrator password"
     type = string
     sensitive = true
+}
+
+variable project_name {
+    description = "Name of the project"
+    type = string
+    default = "project-x"
+}
+
+variable environment {
+    description = "Name of the environment"
+    type = string
+    default = "dev"
 }
